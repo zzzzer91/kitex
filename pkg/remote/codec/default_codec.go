@@ -248,6 +248,9 @@ func checkRPCState(ctx context.Context, message remote.Message) error {
 		return nil
 	}
 	if respOp, ok := ctx.Value(retry.CtxRespOp).(*int32); ok {
+		if ctx.Err() == context.DeadlineExceeded || ctx.Err() == context.Canceled {
+			return kerrors.ErrRPCFinish
+		}
 		if !atomic.CompareAndSwapInt32(respOp, retry.OpNo, retry.OpDoing) {
 			// previous call is being handling or done
 			// this flag is used to check request status in retry(backup request) scene
