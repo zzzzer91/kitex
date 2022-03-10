@@ -157,6 +157,10 @@ func (ri *remoteInfo) SetTagLock(key string) {
 func (ri *remoteInfo) SetTag(key, value string) error {
 	ri.Lock()
 	defer ri.Unlock()
+	if key == "cluster" {
+		ri.tags[key] = value
+		return nil
+	}
 	if _, exist := ri.tagLocks[key]; exist {
 		return kerrors.ErrNotSupported
 	}
