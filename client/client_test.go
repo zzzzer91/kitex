@@ -204,7 +204,8 @@ func TestTagOptionLocks1(t *testing.T) {
 
 			var err error
 			err = re.SetTag("cluster", "whatever")
-			test.Assert(t, errors.Is(err, kerrors.ErrNotSupported))
+			//test.Assert(t, errors.Is(err, kerrors.ErrNotSupported))
+			test.Assert(t, err == nil)
 
 			err = re.SetTag("idc", "whatever")
 			test.Assert(t, errors.Is(err, kerrors.ErrNotSupported))
@@ -233,7 +234,8 @@ func TestTagOptionLocks2(t *testing.T) {
 
 			var err error
 			err = re.SetTag("cluster", "whatever")
-			test.Assert(t, errors.Is(err, kerrors.ErrNotSupported))
+			//test.Assert(t, errors.Is(err, kerrors.ErrNotSupported))
+			test.Assert(t, err == nil)
 
 			err = re.SetTag("idc", "whatever")
 			test.Assert(t, errors.Is(err, kerrors.ErrNotSupported))
