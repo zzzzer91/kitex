@@ -233,6 +233,10 @@ func (t *svrTransHandler) task(muxSvrConnCtx context.Context, conn net.Conn, rea
 	bufReader := np.NewReaderByteBuffer(reader)
 	err = t.readWithByteBuffer(ctx, bufReader, recvMsg)
 	if err != nil {
+		if t.ext.IsTimeoutErr(err) {
+			// read timeout is more explicit
+			err = remote.NewTransErrorWithMsg(remote.ReadTimeout, err.Error())
+		}
 		// No need to close the connection when read failed in mux case, because it had finished reads.
 		// But still need to close conn if write failed
 		closeConn = t.writeErrorReplyIfNeeded(ctx, recvMsg, muxSvrConn, rpcInfo, err, true)

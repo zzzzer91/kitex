@@ -132,6 +132,10 @@ func (t *svrTransHandler) OnRead(ctx context.Context, conn net.Conn) error {
 	recvMsg.SetPayloadCodec(t.opt.PayloadCodec)
 	err = t.Read(ctx, conn, recvMsg)
 	if err != nil {
+		if t.ext.IsTimeoutErr(err) {
+			// read timeout is more explicit
+			err = remote.NewTransErrorWithMsg(remote.ReadTimeout, err.Error())
+		}
 		closeConn = true
 		t.writeErrorReplyIfNeeded(ctx, recvMsg, conn, err, ri, true)
 		t.OnError(ctx, err, conn)

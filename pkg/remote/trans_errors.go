@@ -36,6 +36,11 @@ const (
 	InvalidTransform            = 8
 	InvalidProtocol             = 9
 	UnsupportedClientType       = 10
+
+	// ReadTimeout is new added code
+	// It indicates the read timeout happened.
+	// Skip the code from 11-19 is to avoid incompatibility problems caused by new error codes added in thrift
+	ReadTimeout = 20
 )
 
 var defaultTransErrorMessage = map[int32]string{
