@@ -20,6 +20,7 @@ import (
 	"context"
 	"encoding/binary"
 	"fmt"
+	"io"
 
 	"github.com/bytedance/gopkg/lang/mcache"
 	"github.com/cloudwego/fastpb"
@@ -110,6 +111,9 @@ func (c *grpcCodec) Decode(ctx context.Context, message remote.Message, in remot
 		return proto.Unmarshal(d, t)
 	case protobufMsgCodec:
 		return t.Unmarshal(d)
+	case io.Writer:
+		_, err = t.Write(d)
+		return err
 	}
 	return nil
 }
